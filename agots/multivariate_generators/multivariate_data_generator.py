@@ -5,6 +5,7 @@ from agots.multivariate_generators.multivariate_extreme_outlier_generator import
 from agots.multivariate_generators.multivariate_shift_outlier_generator import MultivariateShiftOutlierGenerator
 from agots.multivariate_generators.multivariate_trend_outlier_generator import MultivariateTrendOutlierGenerator
 from agots.multivariate_generators.multivariate_variance_outlier_generator import MultivariateVarianceOutlierGenerator
+from agots.multivariate_generators.multivariate_flatline_outlier_generator import MultivariateFlatlineOutlierGenerator
 
 INITIAL_VALUE_MIN = 0
 INITIAL_VALUE_MAX = 1
@@ -170,7 +171,8 @@ class MultivariateDataGenerator:
         OUTLIER_GENERATORS = {'extreme': MultivariateExtremeOutlierGenerator,
                               'shift': MultivariateShiftOutlierGenerator,
                               'trend': MultivariateTrendOutlierGenerator,
-                              'variance': MultivariateVarianceOutlierGenerator}
+                              'variance': MultivariateVarianceOutlierGenerator,
+                              'flatline': MultivariateFlatlineOutlierGenerator}
 
         generator_keys = []
 
@@ -187,7 +189,7 @@ class MultivariateDataGenerator:
                         self.STREAM_LENGTH), 'timestamp must be between 0 and {} but was {}'.format(self.STREAM_LENGTH,
                                                                                                     timestamp)
 
-        df = self.data
+        df = self.data.copy()
         if self.data.shape == (0, 0):
             raise Exception('You have to first compute a base line by invoking generate_baseline()')
         for generator_key in generator_keys:
